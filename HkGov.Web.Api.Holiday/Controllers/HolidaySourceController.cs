@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HkGov.Web.Api.Holiday.Bases;
 using HkGov.Web.Api.Holiday.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -9,13 +10,9 @@ using Microsoft.Extensions.Options;
 
 namespace HkGov.Web.Api.Holiday.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class HolidaySourceController : ControllerBase
+    public class HolidaySourceController : BaseApiController
     {
-        protected AppSettings _appSettings;
-        public HolidaySourceController(IOptions<AppSettings> appSettings) {
-            _appSettings = appSettings.Value;
+        public HolidaySourceController(IOptions<AppSettings> appSettings): base(appSettings) {
         }
         // GET api/values
         [HttpGet]
