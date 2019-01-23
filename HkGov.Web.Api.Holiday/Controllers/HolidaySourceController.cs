@@ -12,8 +12,7 @@ namespace HkGov.Web.Api.Holiday.Controllers
 {
     public class HolidaySourceController : BaseApiController
     {
-        public HolidaySourceController(IOptions<AppSettings> appSettings): base(appSettings) {
-        }
+        public HolidaySourceController(IOptions<AppSettings> appSettings) : base(appSettings) { }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<HolidaySource>> Get()

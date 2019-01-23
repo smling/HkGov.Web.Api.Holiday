@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>HkGov.Web.Api.Holiday</name>
+    </assembly>
+    <members>
+        <member name="M:HkGov.Web.Api.Holiday.Controllers.HolidayController.Get(System.String)">
+            <summary>
+            Get General holiday from Government.
+            </summary>
+            <param name="language">EN (Englist), TC (Tradition Chinese) and SC (Simplication Chinese)</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

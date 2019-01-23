@@ -17,5 +17,10 @@ namespace HkGov.Web.Api.Holiday
             public const string AppSettingFilePath = "appsettings.json";
             public const string AppSettingSection = "AppSettings";
         }
+        public class Languages {
+            public const string English = "en";
+            public const string TraditionalChinese = "tc";
+            public const string SimpificationChinese = "sc";
+        }
     }
 }
