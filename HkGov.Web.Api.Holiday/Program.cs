@@ -19,6 +19,11 @@ namespace HkGov.Web.Api.Holiday
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+            .ConfigureAppConfiguration((builderContext, config) =>
+            {
+                config.AddJsonFile(Constants.Settings.AppSettingFilePath, optional: false, reloadOnChange: true);
+                config.AddEnvironmentVariables();
+            })
+            .UseStartup<Startup>();
     }
 }

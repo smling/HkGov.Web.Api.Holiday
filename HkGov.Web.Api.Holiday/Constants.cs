@@ -13,5 +13,9 @@ namespace HkGov.Web.Api.Holiday
             public const string Version = "v1";
             public const string SwaggerEndpoint = "/swagger/v1/swagger.json";
         }
+        public class Settings {
+            public const string AppSettingFilePath = "appsettings.json";
+            public const string AppSettingSection = "AppSettings";
+        }
     }
 }

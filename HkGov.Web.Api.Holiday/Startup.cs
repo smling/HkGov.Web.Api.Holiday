@@ -27,7 +27,7 @@ namespace HkGov.Web.Api.Holiday
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-
+            services.Configure<AppSettings>(Configuration.GetSection(Constants.Settings.AppSettingSection));
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
