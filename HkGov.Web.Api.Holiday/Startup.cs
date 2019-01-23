@@ -37,6 +37,7 @@ namespace HkGov.Web.Api.Holiday
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc(Constants.Api.Version, new Info { Title = Constants.Api.Title, Version = Constants.Api.Version });
+                c.IncludeXmlComments(GetXmlCommentsPath());
             });
         }
 
@@ -67,7 +68,6 @@ namespace HkGov.Web.Api.Holiday
             {
                 string endpointName = Constants.Api.Title + " " + Constants.Api.Version;
                 c.SwaggerEndpoint(Constants.Api.SwaggerEndpoint, endpointName);
-                c.IncludeXmlComments(GetXmlCommentsPath());
             });
 
             app.UseMvc();

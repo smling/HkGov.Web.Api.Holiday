@@ -1,13 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HkGov.Web.Api.Holiday.Models
 {
+    /// <summary>
+    /// Holiday object.
+    /// </summary>
     public class Holiday
     {
+        /// <summary>
+        /// Date of holiday.
+        /// </summary>
         public DateTime Date { get; set; }
+        /// <summary>
+        /// Holiday description.
+        /// </summary>
         public string Description { get; set; }
     }
 }

@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace HkGov.Web.Api.Holiday
 {
+    /// <summary>
+    /// Application Settings.
+    /// </summary>
     public class AppSettings
     {
+        /// <summary>
+        /// URL List of Holiday sources.
+        /// </summary>
         public IList<HolidaySource> HolidaySources { get; set; }
     }
 }

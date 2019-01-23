@@ -4,12 +4,236 @@
         <name>HkGov.Web.Api.Holiday</name>
     </assembly>
     <members>
+        <member name="T:HkGov.Web.Api.Holiday.AppSettings">
+            <summary>
+            Application Settings.
+            </summary>
+        </member>
+        <member name="P:HkGov.Web.Api.Holiday.AppSettings.HolidaySources">
+            <summary>
+            URL List of Holiday sources.
+            </summary>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Bases.BaseApiController">
+            <summary>
+            Abstract class to generialize Web API.
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Bases.BaseApiController._appSettings">
+            <summary>
+            DI property on AppSettings.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Bases.BaseApiController.#ctor(Microsoft.Extensions.Options.IOptions{HkGov.Web.Api.Holiday.AppSettings})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="appSettings"></param>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Constants">
+            <summary>
+            Application constants.
+            </summary>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Constants.Api">
+            <summary>
+            API related constants, which will shown in Swagger UI.
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Api.Title">
+            <summary>
+            API Name.
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Api.Version">
+            <summary>
+            API Version.
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Api.SwaggerEndpoint">
+            <summary>
+            Swagger JSON endpoint URL.
+            </summary>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Constants.Settings">
+            <summary>
+            Application Settings for load into class AppSettings.
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Settings.AppSettingFilePath">
+            <summary>
+            AppSetting file path.
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Settings.AppSettingSection">
+            <summary>
+            AppSetting JSON section name.
+            </summary>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Constants.Languages">
+            <summary>
+            API support language.
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Languages.English">
+            <summary>
+            English (EN)
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Languages.TraditionalChinese">
+            <summary>
+            Traditional Chinese (TC)
+            </summary>
+        </member>
+        <member name="F:HkGov.Web.Api.Holiday.Constants.Languages.SimpifiedChinese">
+            <summary>
+            Simplified chinese (SC)
+            </summary>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Controllers.HolidayController">
+            <summary>
+            Get Holiday provided by HK Gov.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Controllers.HolidayController.#ctor(Microsoft.Extensions.Options.IOptions{HkGov.Web.Api.Holiday.AppSettings})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="appSettings"></param>
+        </member>
         <member name="M:HkGov.Web.Api.Holiday.Controllers.HolidayController.Get(System.String)">
             <summary>
             Get General holiday from Government.
             </summary>
-            <param name="language">EN (Englist), TC (Tradition Chinese) and SC (Simplication Chinese)</param>
+            <param name="language">See Constants.Languages.</param>
             <returns></returns>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Controllers.HolidaySourceController">
+            <summary>
+            Get Holiday Source.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Controllers.HolidaySourceController.#ctor(Microsoft.Extensions.Options.IOptions{HkGov.Web.Api.Holiday.AppSettings})">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="appSettings"></param>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Controllers.HolidaySourceController.Get">
+            <summary>
+            Get all holiday sources.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Http.HttpRequester">
+            <summary>
+            HTTP request class to resolve HTTP request and response.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Http.HttpRequester.GetResponseAsStringAsync(System.String)">
+            <summary>
+            Send HTTP GET request to target URL.
+            </summary>
+            <param name="url">Target URL.</param>
+            <returns>HTTP response in string format</returns>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.iCal.ICalReader">
+            <summary>
+            ICal.net Wrapper to get ical stream data.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.iCal.ICalReader.Read(System.String)">
+            <summary>
+            Resolve data in URL and return Holiday format.
+            </summary>
+            <param name="filePath">Target file path.</param>
+            <returns>List of holiday.</returns>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Models.Builders.HolidayBuilder">
+            <summary>
+            Builder for creating Holiday class.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Models.Builders.HolidayBuilder.Create(Ical.Net.CalendarComponents.CalendarEvent)">
+            <summary>
+            Create Hoilday class by calendar event.
+            </summary>
+            <param name="calendarEvent"></param>
+            <returns></returns>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Models.Holiday">
+            <summary>
+            Holiday object.
+            </summary>
+        </member>
+        <member name="P:HkGov.Web.Api.Holiday.Models.Holiday.Date">
+            <summary>
+            Date of holiday.
+            </summary>
+        </member>
+        <member name="P:HkGov.Web.Api.Holiday.Models.Holiday.Description">
+            <summary>
+            Holiday description.
+            </summary>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Models.HolidaySource">
+            <summary>
+            Holiday source.
+            </summary>
+        </member>
+        <member name="P:HkGov.Web.Api.Holiday.Models.HolidaySource.Name">
+            <summary>
+            Source Name.
+            </summary>
+        </member>
+        <member name="P:HkGov.Web.Api.Holiday.Models.HolidaySource.Url">
+            <summary>
+            Source URL.
+            </summary>
+        </member>
+        <member name="P:HkGov.Web.Api.Holiday.Models.HolidaySource.Language">
+            <summary>
+            Source language.
+            </summary>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Program">
+            <summary>
+            Main Program.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Program.Main(System.String[])">
+            <summary>
+            Main program to execute.
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="T:HkGov.Web.Api.Holiday.Startup">
+            <summary>
+            Startup class to initial application.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Constructor.
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:HkGov.Web.Api.Holiday.Startup.Configuration">
+            <summary>
+            Application configuration.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Gets called by the runtime. Use this method to add services to the container.
+            </summary>
+        </member>
+        <member name="M:HkGov.Web.Api.Holiday.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IHostingEnvironment)">
+            <summary>
+            gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
         </member>
     </members>
 </doc>
