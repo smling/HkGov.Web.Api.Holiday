@@ -26,12 +26,15 @@ namespace HkGov.Web.Api.Holiday.iCal
             IList<Holiday.Models.Holiday> result = new List<Holiday.Models.Holiday>();
             HttpRequester requester = new HttpRequester();
             string icalString = await requester.GetResponseAsStringAsync(filePath);
-            Calendar calendar = Calendar.Load(icalString);
-            Console.WriteLine("calendiar loaded." + calendar.Events.Count);
-            calendar.Events.ToList().ForEach(delegate (CalendarEvent calendarEvent) {
-                Holiday.Models.Holiday holiday = HolidayBuilder.Create(calendarEvent);
-                result.Add(holiday);
-            });
+            if(!string.IsNullOrEmpty(icalString))
+            {
+                Calendar calendar = Calendar.Load(icalString);
+                Console.WriteLine("calendiar loaded." + calendar.Events.Count);
+                calendar.Events.ToList().ForEach(delegate (CalendarEvent calendarEvent) {
+                    Holiday.Models.Holiday holiday = HolidayBuilder.Create(calendarEvent);
+                    result.Add(holiday);
+                });
+            }            
             return result;
         }
     }
