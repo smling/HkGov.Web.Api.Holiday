@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Reflection;
 
@@ -31,12 +33,14 @@ namespace HkGov.Web.Api.Holiday
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddMvc(c=> {
+                c.EnableEndpointRouting = false;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
             services.Configure<AppSettings>(Configuration.GetSection(Constants.Settings.AppSettingSection));
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc(Constants.Api.Version, new Info { Title = Constants.Api.Title, Version = Constants.Api.Version });
+                c.SwaggerDoc(Constants.Api.Version, new OpenApiInfo { Title = Constants.Api.Title, Version = Constants.Api.Version });
                 c.IncludeXmlComments(GetXmlCommentsPath());
             });
         }
@@ -46,7 +50,7 @@ namespace HkGov.Web.Api.Holiday
         /// </summary>
         /// <param name="app"></param>
         /// <param name="env"></param>
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
