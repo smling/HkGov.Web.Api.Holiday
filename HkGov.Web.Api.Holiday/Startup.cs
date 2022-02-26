@@ -35,7 +35,7 @@ namespace HkGov.Web.Api.Holiday
         {
             services.AddMvc(c=> {
                 c.EnableEndpointRouting = false;
-            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+            });
             services.Configure<AppSettings>(Configuration.GetSection(Constants.Settings.AppSettingSection));
             // Register the Swagger generator, defining 1 or more Swagger documents
             services.AddSwaggerGen(c =>
@@ -43,6 +43,8 @@ namespace HkGov.Web.Api.Holiday
                 c.SwaggerDoc(Constants.Api.Version, new OpenApiInfo { Title = Constants.Api.Title, Version = Constants.Api.Version });
                 c.IncludeXmlComments(GetXmlCommentsPath());
             });
+
+            services.AddHealthChecks();
         }
 
         /// <summary>
@@ -73,8 +75,8 @@ namespace HkGov.Web.Api.Holiday
                 string endpointName = Constants.Api.Title + " " + Constants.Api.Version;
                 c.SwaggerEndpoint(Constants.Api.SwaggerEndpoint, endpointName);
             });
-
             app.UseMvc();
+            app.UseHealthChecks("/health");
         }
 
         private string GetXmlCommentsPath()

@@ -1,7 +1,5 @@
 using HkGov.Web.Api.Holiday.Controllers;
 using HkGov.Web.Api.Holiday.iCal;
-using Microsoft.CodeAnalysis.Options;
-using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
 using System.Collections.Generic;
