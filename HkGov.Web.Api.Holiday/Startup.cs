@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using HkGov.Web.Api.Holiday.Diagnosis;
+using HkGov.Web.Api.Holiday.Diagnosis.Probes;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -6,7 +9,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 namespace HkGov.Web.Api.Holiday
 {
@@ -33,7 +38,8 @@ namespace HkGov.Web.Api.Holiday
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(c=> {
+            services.AddMvc(c =>
+            {
                 c.EnableEndpointRouting = false;
             });
             services.Configure<AppSettings>(Configuration.GetSection(Constants.Settings.AppSettingSection));
@@ -44,7 +50,7 @@ namespace HkGov.Web.Api.Holiday
                 c.IncludeXmlComments(GetXmlCommentsPath());
             });
 
-            services.AddHealthChecks();
+            services.AddHealthChecks().AddCheck<DataSourceHealthCheckProbe>(name: "Data source health check");
         }
 
         /// <summary>
@@ -76,7 +82,28 @@ namespace HkGov.Web.Api.Holiday
                 c.SwaggerEndpoint(Constants.Api.SwaggerEndpoint, endpointName);
             });
             app.UseMvc();
-            app.UseHealthChecks("/health");
+            app.UseHealthChecks("/health", new HealthCheckOptions
+            {
+                ResponseWriter = async (context, report) =>
+                {
+                    context.Response.ContentType = "application/json";
+                    HealthCheckResponse response = new HealthCheckResponse
+                    {
+                        Status = report.Status.ToString(),
+                        HealthCheckProbes = report.Entries.Select(o => new HealthCheckProbe
+                        {
+                            Component = o.Key,
+                            Description = o.Value.Description,
+                            Status = o.Value.Status.ToString(),
+                            Duration = o.Value.Duration,
+                            Exception = o.Value.Exception == null ? string.Empty : o.Value.Exception.ToString(),
+                            Message = o.Value.Exception == null ? string.Empty : o.Value.Exception.Message,
+                        }),
+                        Duration = report.TotalDuration,
+                    };
+                    await context.Response.Body.WriteAsync(JsonSerializer.SerializeToUtf8Bytes(response));
+                }
+            });
         }
 
         private string GetXmlCommentsPath()
