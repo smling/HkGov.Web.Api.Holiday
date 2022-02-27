@@ -18,10 +18,12 @@ namespace HkGov.Web.Api.Holiday.Http
         public async Task<string> GetResponseAsStringAsync(string url)
         {
             string result = String.Empty;
-            using (HttpResponseMessage response = await _client.GetAsync(url)) {
-                if (response.IsSuccessStatusCode) {
-                    result = await response.Content.ReadAsStringAsync();
-                }
+            using (HttpResponseMessage response = await _client.GetAsync(url))
+            {
+                if (!response.IsSuccessStatusCode)
+                    throw new HttpRequestException($"Error occurred when sending HTTP GET to target URL {url}.");
+                result = await response.Content.ReadAsStringAsync();
+
             }
             return result;
         }
