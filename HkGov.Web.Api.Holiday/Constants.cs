@@ -5,6 +5,7 @@
     /// </summary>
     public class Constants
     {
+        public const string ServiceName = "Hong Kong Public Holiday Service";
         /// <summary>
         /// API related constants, which will shown in Swagger UI.
         /// </summary>

@@ -12,6 +12,10 @@ namespace HkGov.Web.Api.Holiday
     public class AppSettings
     {
         /// <summary>
+        /// Service name.
+        /// </summary>
+        public string ServiceName { get; set; }
+        /// <summary>
         /// URL List of Holiday sources.
         /// </summary>
         public IList<HolidaySource> HolidaySources { get; set; }

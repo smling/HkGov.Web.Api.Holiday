@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Trace;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Linq;
 using System.Reflection;
@@ -50,7 +52,19 @@ namespace HkGov.Web.Api.Holiday
                 c.IncludeXmlComments(GetXmlCommentsPath());
             });
 
+            string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
             services.AddHealthChecks().AddCheck<DataSourceHealthCheckProbe>(name: "Data source health check");
+            services.AddOpenTelemetryTracing(builder =>
+            {
+                builder
+                .AddConsoleExporter()
+                .AddSource(Constants.ServiceName)
+                .SetResourceBuilder(
+                    ResourceBuilder.CreateDefault()
+                        .AddService(serviceName: Constants.ServiceName, serviceVersion: version))
+                .AddHttpClientInstrumentation()
+                .AddAspNetCoreInstrumentation();
+            });
         }
 
         /// <summary>
@@ -104,6 +118,7 @@ namespace HkGov.Web.Api.Holiday
                     await context.Response.Body.WriteAsync(JsonSerializer.SerializeToUtf8Bytes(response));
                 }
             });
+
         }
 
         private string GetXmlCommentsPath()
