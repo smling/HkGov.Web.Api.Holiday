@@ -1,8 +1,10 @@
 ﻿using HkGov.Web.Api.Holiday.Diagnosis;
 using HkGov.Web.Api.Holiday.Diagnosis.Probes;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,7 @@ using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 using Swashbuckle.AspNetCore.Swagger;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text.Json;
 
@@ -84,6 +87,24 @@ namespace HkGov.Web.Api.Holiday
                 app.UseHsts();
             }
 
+            app.UseExceptionHandler(
+                options =>
+                {
+                    options.Run(
+                        async context =>
+                        {
+                            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                            context.Response.ContentType = "text/html";
+                            var ex = context.Features.Get<IExceptionHandlerFeature>();
+                            if (ex != null)
+                            {
+                                var err = $"<h1>Error: {ex.Error.Message}</h1>{ex.Error.StackTrace}";
+                                await context.Response.WriteAsync(err).ConfigureAwait(false);
+                            }
+                        });
+                }
+            );
+
             app.UseHttpsRedirection();
 
             // Enable middleware to serve generated Swagger as a JSON endpoint.
@@ -96,6 +117,7 @@ namespace HkGov.Web.Api.Holiday
                 c.SwaggerEndpoint(Constants.Api.SwaggerEndpoint, endpointName);
             });
             app.UseMvc();
+
             app.UseHealthChecks("/health", new HealthCheckOptions
             {
                 ResponseWriter = async (context, report) =>
