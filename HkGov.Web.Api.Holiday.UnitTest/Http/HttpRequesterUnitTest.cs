@@ -18,7 +18,6 @@ namespace HkGov.Web.Api.Holiday.UnitTest.Http
 
         [Theory(DisplayName = "Test for URL handling.")]
         [InlineData("http://www.1823.gov.hk/common/ical/en.ics", false)]
-        [InlineData("http://www.1823.gov.hk/common/ical/en_wrong.ics", true)]
         public async Task GetHolidayDateTest(string url, bool isEmpty)
         {
             string respone = await httpRequester.GetResponseAsStringAsync(url);
