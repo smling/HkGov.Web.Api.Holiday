@@ -20,12 +20,16 @@ namespace HkGov.Web.Api.Holiday.UnitTest.iCal
 
         [Theory(DisplayName ="Test for calendar file handling.")]
         [InlineData("http://www.1823.gov.hk/common/ical/en.ics",1)]
-        [InlineData("http://www.1823.gov.hk/common/ical/en_wrong.ics", 0)]
         public async Task GetHolidayDateTest(string url, int minRecordCount)
         {
             IEnumerable<Models.Holiday> testData=await calReader.Read(url);
             Assert.NotNull(testData);
             Assert.True(testData.ToArray().Length >= minRecordCount);
+        }
+
+        [InlineData("http://www.1823.gov.hk/common/ical/en_wrong.ics", 0)]
+        public async Task GetHolidayDateTest_WithFailureUrl(string url) {
+            await Assert.ThrowsAsync<ArgumentException>(() => calReader.Read(url));
         }
     }
 }
